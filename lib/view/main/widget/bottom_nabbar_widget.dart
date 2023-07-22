@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 
 class BottomNavbarWidget extends StatelessWidget {
   final MainController mainController;
-  const BottomNavbarWidget({Key? key, required this.mainController}) : super(key: key);
+  const BottomNavbarWidget({Key? key, required this.mainController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () {
+      () {
         return BottomNavigationBar(
           currentIndex: mainController.selectedIndex.value,
           onTap: (index) {

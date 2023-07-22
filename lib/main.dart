@@ -1,7 +1,4 @@
 import 'package:countries_details_app/res/routes/routes.dart';
-import 'package:countries_details_app/view/details/country_details.dart';
-import 'package:countries_details_app/view/home/home_screen.dart';
-import 'package:countries_details_app/view/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,8 +17,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
-      //getPages: AppRoutes.appRoutes(),
+     // home: const HomeScreen(),
+      getPages: AppRoutes.appRoutes(),
     );
   }
 }

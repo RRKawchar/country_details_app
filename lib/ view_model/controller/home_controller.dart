@@ -1,9 +1,10 @@
-import 'package:countries_details_app/%20view_model/services/api_service.dart';
+import 'package:countries_details_app/data/network/api_enpoint.dart';
+import 'package:countries_details_app/data/network/network_api_service.dart';
 import 'package:countries_details_app/models/country_model.dart';
+import 'package:countries_details_app/res/utils.dart';
 import 'package:get/get.dart';
-
 class HomeController extends GetxController {
-  final ApiService _apiService = ApiService();
+
   RxList<CountryModel> countries = <CountryModel>[].obs;
   RxBool isLoading = true.obs;
 
@@ -13,15 +14,34 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  void fetchCountries() async {
-    try {
+
+  void fetchCountries()async{
+
+    try{
       isLoading.value = true;
-      final fetchedCountries = await _apiService.fetchCountries();
-      countries.assignAll(fetchedCountries);
-    } catch (e) {
-     print("My Error : $e");
-    } finally {
+      dynamic responseBody=await NetworkApiService.handleResponse(
+        await NetworkApiService.getRequest(ApiEnPoint.countryApi)
+      );
+
+      if(responseBody !=null){
+        countries.value=[];
+        for(var country in responseBody){
+          countries.add(CountryModel.fromJson(country));
+        }
+      }else {
+        isLoading.value = false;
+        throw 'Unable to load Country list';
+      }
+
+    }catch(e){
+      kPrint(e.toString());
+      isLoading.value = false;
+    }finally{
       isLoading.value = false;
     }
   }
+
+
+
+
 }

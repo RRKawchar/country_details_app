@@ -1,8 +1,9 @@
 import 'package:countries_details_app/%20view_model/controller/home_controller.dart';
+import 'package:countries_details_app/res/components/custom_text.dart';
 import 'package:countries_details_app/view/details/country_details.dart';
+import 'package:countries_details_app/view/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,104 +13,89 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _searchController = TextEditingController();
-
   final homeController = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
+        title: const CustomText(
+          text: "Countries",
+          fontWeight: FontWeight.bold,
+          size: 30,
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(CountrySearchScreen());
+              },
+              icon: const Icon(
+                Icons.search,
+                size: 40,
+              ))
+        ],
+      ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: 60,
+        child: Obx(
+          () {
+            if (homeController.countries.isEmpty) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () => _searchController.clear(),
+              itemCount: homeController.countries.length,
+              itemBuilder: (context, index) {
+                  final countriesList=homeController.countries[index];
+                return InkWell(
+                  onTap: () {
+                    Get.to(CountryDetails(
+                      countryModel:countriesList,
+                    ));
+                  },
+                  child: ListTile(
+                    leading: Container(
+                      height: 50,
+                      width: 70,
+                      color: Colors.red,
+                      child: Image.network(countriesList.flags!.png.toString()),
+                    ),
+                    title:CustomText(text: countriesList.name.toString(),),
+                    trailing: CustomText(text: countriesList.cioc.toString(),),
+
+                    // subtitle: Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     countriesList.capital == null
+                    //         ? const Text("")
+                    //         : Text(countriesList.capital!.first.toString()),
+                    //     if (countriesList.maps!.googleMaps != null)
+                    //       ElevatedButton(
+                    //         onPressed: () {
+                    //           _openGoogleMaps(countriesList.maps!.googleMaps!);
+                    //         },
+                    //         child: const Text('Open Google Maps'),
+                    //       ),
+                    //   ],
+                    // ),
                   ),
-                  prefixIcon: IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () {},
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-            ),
-            const Divider(),
-            Expanded(
-              child: Obx(
-                () {
-                  if (homeController.countries.isEmpty) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      itemCount: 23,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: (){
-                            Get.to(CountryDetails(countryModel: homeController.countries[index],));
-                          },
-                          child: Card(
-                            child: ListTile(
-                                leading: Container(
-                                  height: double.infinity,
-                                  width: 70,
-                                  color: Colors.red,
-                                  child: Image.network(homeController
-                                      .countries[index].flags!.png
-                                      .toString()),
-                                ),
-                                title: Text(homeController.countries[index].name
-                                    .toString()),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    homeController.countries[index].capital ==
-                                            null
-                                        ? const Text("")
-                                        : Text(homeController
-                                            .countries[index].capital!.first
-                                            .toString()),
-                                    if (homeController
-                                            .countries[index].maps!.googleMaps !=
-                                        null)
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          _openGoogleMaps(homeController
-                                              .countries[index].maps!.googleMaps!);
-                                        },
-                                        child: const Text('Open Google Maps'),
-                                      ),
-                                  ],
-                                )),
-                          ),
-                        );
-                      });
-                },
-              ),
-            )
-          ],
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
 
-  void _openGoogleMaps(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url,forceWebView: true);
-    } else {
-      // Handle error if the URL cannot be opened
-    }
-  }
+  // void _openGoogleMaps(String url) async {
+  //   if (await canLaunch(url)) {
+  //     await launch(url, forceWebView: true);
+  //   } else {
+  //     // Handle error if the URL cannot be opened
+  //   }
+  // }
 }
