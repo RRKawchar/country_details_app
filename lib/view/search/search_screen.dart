@@ -1,4 +1,5 @@
 import 'package:countries_details_app/%20view_model/controller/search_controller.dart';
+import 'package:countries_details_app/res/components/custom_text.dart';
 import 'package:countries_details_app/view/details/country_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +23,7 @@ class CountrySearchScreen extends StatelessWidget {
               child: TextField(
                 controller: _filterController.srController.value,
                 onChanged: (value) {
-                  _filterController.searchCountryByName(value);
+                  _filterController.searchCountryByNameT(value);
                 },
                 onSubmitted: (value){
 
@@ -34,7 +35,7 @@ class CountrySearchScreen extends StatelessWidget {
                     icon: const Icon(Icons.clear),
                     onPressed: (){
                       _filterController.srController.value.clear();
-                      _filterController.searchCountryByName('');
+                      _filterController.searchCountryByNameT('');
                       _filterController.searchFocusNode.value.unfocus();
                     },
                   ),
@@ -49,46 +50,56 @@ class CountrySearchScreen extends StatelessWidget {
               ),
             ),
             const Divider(thickness: 2,),
-            Obx(() {
-              final country = _filterController.country;
-              if (_filterController.srController.value.text.isEmpty) {
-                return Container();
-              } else {
-                return InkWell(
-                  onTap: () {
-                    Get.to(CountryDetails(
-                      countryModel: country,
-                    ));
-                  },
-                  child: Card(
-                    child: ListTile(
-                      leading: Container(
-                        height: double.infinity,
-                        width: 70,
-                        color: Colors.red,
-                        child: Image.network(country.flags!.png.toString()),
-                      ),
-                      title: Text(country.name.toString()),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          country.capital == null
-                              ? const Text("")
-                              : Text(country.capital!.first.toString()),
-                          if (country.maps!.googleMaps != null)
-                            ElevatedButton(
-                              onPressed: () {
-                                // _openGoogleMaps(country.maps!.googleMaps!);
-                              },
-                              child: const Text('Open Google Maps'),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }
-            }),
+            Expanded(
+              child: Obx(() {
+
+                if (_filterController.srController.value.text.isEmpty) {
+                  return Container();
+                } else {
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    itemCount: _filterController.countries.length,
+                    itemBuilder: (context, index) {
+                      final countriesList=_filterController.countries[index];
+                      return InkWell(
+                        onTap: () {
+                          Get.to(CountryDetails(
+                            countryModel:countriesList,
+                          ));
+                        },
+                        child: ListTile(
+                          leading: Container(
+                            height: 50,
+                            width: 70,
+                            color: Colors.red,
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Image.network(countriesList.flags!.png.toString()),
+                          ),
+                          title:CustomText(text: countriesList.name.toString(),),
+                          trailing: CustomText(text: countriesList.cioc.toString(),),
+
+                          // subtitle: Column(
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     countriesList.capital == null
+                          //         ? const Text("")
+                          //         : Text(countriesList.capital!.first.toString()),
+                          //     if (countriesList.maps!.googleMaps != null)
+                          //       ElevatedButton(
+                          //         onPressed: () {
+                          //           _openGoogleMaps(countriesList.maps!.googleMaps!);
+                          //         },
+                          //         child: const Text('Open Google Maps'),
+                          //       ),
+                          //   ],
+                          // ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              }),
+            ),
           ],
         ),
       ),

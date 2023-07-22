@@ -7,11 +7,10 @@ import 'package:http/http.dart' as http;
 
 class NetworkApiService {
 
-
   static var noInternetMessage = "Please check your internet connection!";
+
   static getRequest(String url) async {
     final response = await http.get(Uri.parse(url));
-
     return response;
   }
 

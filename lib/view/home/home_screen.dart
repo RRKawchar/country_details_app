@@ -1,5 +1,6 @@
 import 'package:countries_details_app/%20view_model/controller/home_controller.dart';
 import 'package:countries_details_app/res/components/custom_text.dart';
+import 'package:countries_details_app/res/utils.dart';
 import 'package:countries_details_app/view/details/country_details.dart';
 import 'package:countries_details_app/view/search/search_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,17 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         child: Obx(
-          () {
-            if (homeController.countries.isEmpty) {
+              () {
+            if (homeController.countriesList.isEmpty) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
             return ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              itemCount: homeController.countries.length,
+              itemCount: homeController.countriesList.length,
               itemBuilder: (context, index) {
-                  final countriesList=homeController.countries[index];
+                final countriesList=homeController.countriesList[index];
                 return InkWell(
                   onTap: () {
                     Get.to(CountryDetails(
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 50,
                       width: 70,
                       color: Colors.red,
+                      margin: const EdgeInsets.only(bottom: 10),
                       child: Image.network(countriesList.flags!.png.toString()),
                     ),
                     title:CustomText(text: countriesList.name.toString(),),
