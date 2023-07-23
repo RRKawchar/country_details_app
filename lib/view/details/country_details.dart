@@ -1,74 +1,51 @@
 import 'package:countries_details_app/models/country_model.dart';
-import 'package:countries_details_app/res/components/custom_text.dart';
+import 'package:countries_details_app/view/details/widgets/coat_of_arms_widget.dart';
+import 'package:countries_details_app/view/details/widgets/details_flag_about_widget.dart';
+import 'package:countries_details_app/view/details/widgets/details_google_map.dart';
+import 'package:countries_details_app/view/details/widgets/details_items.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:get/get.dart';
 
-class CountryDetails extends StatefulWidget {
+class CountryDetails extends StatelessWidget {
   final CountryModel countryModel;
-  const CountryDetails({
-    Key? key,
-    required this.countryModel,
-  }) : super(key: key);
-
-  @override
-  State<CountryDetails> createState() => _CountryDetailsState();
-}
-
-class _CountryDetailsState extends State<CountryDetails> {
-  static const LatLng _initialPosition =
-      LatLng(24.147754030382274, 90.23052063035128);
-
-  GoogleMapController? _mapController;
+  const CountryDetails({Key? key, required this.countryModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.countryModel.name.toString()),
+          leading: IconButton(onPressed: (){
+            Get.back();
+          },icon: const Icon(Icons.arrow_back_ios),),
+          title: Text(countryModel.name.toString()),
+          centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Container(
-              height: 300,
-              width: double.infinity,
-              color: Colors.red,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+            child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(text: widget.countryModel.languages!['eng'].toString(),),
-                  CustomText(text: widget.countryModel.translations!.translations!['ara']!.official.toString()),
-                  CustomText(text: widget.countryModel.translations!.translations!['ara']!.common.toString()),
-                  CustomText(text: widget.countryModel.population.toString()),
-                  CustomText(text: widget.countryModel.fifa.toString()),
+                  /// Flags and about text
+                  DetailsFlagAboutWidget(countryModel: countryModel),
+                  const SizedBox(height: 10),
 
+                  /// Area, Population, Continents, Time Zone
+                  DetailsItems(countryModel: countryModel),
+                  const SizedBox(height: 10),
+
+                  /// Country Map
+                  DetailsGoogleMap(countryModel: countryModel),
+                  const SizedBox(height: 10),
+
+                  /// Coat of Arms
+                  CoatOfArmsWidget(countryModel: countryModel,)
                 ],
               ),
             ),
-            Stack(
-              children: [
-                SizedBox(
-                    height: 300,
-                    width: double.infinity,
-                    child: Center(
-                      child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                              widget.countryModel.latlng![0],
-                              widget.countryModel.latlng![
-                                  1]), // Country's latitude and longitude
-                          zoom: 6,
-                        ),
-                        markers: {
-                          Marker(
-                            markerId: const MarkerId('country_marker'),
-                            position: LatLng(widget.countryModel.latlng![0],
-                                widget.countryModel.latlng![1]),
-                          ),
-                        },
-                      ),
-                    ))
-              ],
-            )
-          ],
+          ),
         ));
   }
 }

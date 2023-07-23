@@ -1,8 +1,7 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'package:countries_details_app/models/country_model.dart';
-import 'package:countries_details_app/res/utils.dart';
+import 'package:countries_details_app/res/utils/utils.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiService {

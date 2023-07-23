@@ -17,7 +17,6 @@ class BottomNavbarWidget extends StatelessWidget {
           onTap: (index) {
             mainController.onTapped(index);
           },
-          unselectedItemColor: AppColor.secondaryColor,
           selectedItemColor: AppColor.primaryColor,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
@@ -25,11 +24,17 @@ class BottomNavbarWidget extends StatelessWidget {
               icon: mainController.selectedIndex.value == 0
                   ? const Icon(Icons.home)
                   : const Icon(Icons.home_outlined),
-              label: "Home",
+              label: "home".tr,
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: "continent",
+            BottomNavigationBarItem(
+              icon: mainController.selectedIndex.value == 1
+                  ? const Icon(Icons.map)
+                  : const Icon(Icons.map_outlined),
+              label: "continent".tr,
+            ),
+             BottomNavigationBarItem(
+              icon:const Icon(Icons.settings),
+              label: "settings".tr,
             ),
           ],
         );
