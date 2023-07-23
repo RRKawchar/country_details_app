@@ -4,13 +4,9 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![home](https://github.com/RRKawchar/country_details_app/assets/97376140/f5dc5a9a-fcd5-4151-aafc-6d2237e4cd12)
+![continents](https://github.com/RRKawchar/country_details_app/assets/97376140/d2f6935d-3f32-4dad-a7b3-56d8a9632fea)
+![America](https://github.com/RRKawchar/country_details_app/assets/97376140/dbdafb5c-5f49-4aca-8350-1c4b63ac3881)
+![europe](https://github.com/RRKawchar/country_details_app/assets/97376140/defc3a45-92cf-4414-bb54-8e67189344f5)
+![search](https://github.com/RRKawchar/country_details_app/assets/97376140/5ef29a7a-aa95-4311-bd50-76c80d65a554)
+![setting](https://github.com/RRKawchar/country_details_app/assets/97376140/8e35e803-2527-4401-900a-0a0dbd4d6722)
